@@ -16,6 +16,7 @@ api.listen(3000, () =>{
 // res.send('Hi Shirin');
 // });
 api.post('/add',(requ, res)=> {
-console.log('Your post received');
+//console.log('Your post received');
+console.log(req.body);
 res.send('Hi Shirin you are in postman');
 });
