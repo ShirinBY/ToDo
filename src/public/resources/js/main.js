@@ -29,7 +29,7 @@ document.getElementById('item').addEventListener('keydown', function (e) {
 function addItem (value) {
   addItemToDOM(value);
   document.getElementById('item').value = '';
-
+  sendItemToAPI(value);
   data.todo.push(value);
   dataObjectUpdated();
 }
@@ -119,4 +119,25 @@ function addItemToDOM(text, completed) {
   item.appendChild(buttons);
 
   list.insertBefore(item, list.childNodes[0]);
+}
+
+//method for sending to-do item to API
+
+function sendItemToAPI(item){
+
+  //console.log(item);
+  var req = new XMLHttpRequest();
+  req.open('POST', '/add' ); //Opens up the post request
+  req.send(item); //sends the request
+  //Body Parser for Json Express
+  req.addEventListener('Load', ()=>{
+  //console.log(req.responseText)
+  console.log('request is done')
+  });  //event listener
+
+  req.addEventListener('error', (e) =>{
+  console.log('Somthing happend');
+  console.log(e);
+  
+  });
 }
