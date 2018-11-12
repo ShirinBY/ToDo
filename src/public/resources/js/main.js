@@ -128,11 +128,12 @@ function sendItemToAPI(item){
   //console.log(item);
   var req = new XMLHttpRequest();
   req.open('POST', '/add' ); //Opens up the post request
-  req.send(item); //sends the request
-  //Body Parser for Json Express
+  req.setRequestHeader('content-Type', 'application/json'); //api needs to know that will receive json and needs to handle it
+  req.send(JSON.stringify({item: item})); //sends the request and Body Parser for Json Express
+  
   req.addEventListener('Load', ()=>{
-  //console.log(req.responseText)
-  console.log('request is done')
+  console.log(req.responseText);
+  console.log('request is done');
   });  //event listener
 
   req.addEventListener('error', (e) =>{
