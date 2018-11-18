@@ -29,9 +29,15 @@ document.getElementById('item').addEventListener('keydown', function (e) {
 function addItem (value) {
   addItemToDOM(value);
   document.getElementById('item').value = '';
-  sendItemToAPI(value);
-  data.todo.push(value);
-  dataObjectUpdated();
+    sendItemToAPI(value, (item) =>{
+      console.log (item);
+     data.todo.push(value);
+     dataObjectUpdated();  
+    }); //we throw a call back function where we get the item
+
+
+  // data.todo.push(value);
+  //dataObjectUpdated();  we move both of these inside the sendItemToAPI function
 }
 
 function renderTodoList() {
@@ -123,7 +129,7 @@ function addItemToDOM(text, completed) {
 
 //method for sending to-do item to API
 
-function sendItemToAPI(item){
+function sendItemToAPI(item, callback){
 
   //console.log(item);
   var req = new XMLHttpRequest();
@@ -132,8 +138,12 @@ function sendItemToAPI(item){
   req.send(JSON.stringify({item: item})); //sends the request and Body Parser for Json Express
   
   req.addEventListener('Load', ()=>{
-  console.log(req.responseText);
-  console.log('request is done');
+  //console.log(req.responseText); we comment this out to pars the jason object that we receive here.
+  //console.log('request is done'); 
+  var results = JSON.parse(req.responseText);
+  if (results.error) return console.log (results.error);
+
+  if (callback) callback(results); 
   });  //event listener
 
   req.addEventListener('error', (e) =>{
